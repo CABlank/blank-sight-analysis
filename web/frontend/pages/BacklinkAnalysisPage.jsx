@@ -4,7 +4,7 @@ import { useTranslation, Trans } from "react-i18next";
 import useApi from '../hooks/useApi';
 import { trophyImage } from "../assets";
 import { ProductsCard } from "../components";
-import { DomainExtractor } from "../components/";
+import { DomainExtractor } from "../components";
 
 export default function HomePage() {
   const { t } = useTranslation();
