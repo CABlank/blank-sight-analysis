@@ -14,11 +14,11 @@ const DomainExtractor = () => {
     if (shop) {
       getSessionToken(app)
         .then((token) => {
-          fetch(`https://${shop}/admin/api/2023-04/shop.json`, {
+          fetch(`https://blank-sight-analysis-551f1a0e4152.herokuapp.com/api/shopify/${shop}`, {
             headers: {
-              'X-Shopify-Access-Token': token,
+              'Authorization': `Bearer ${token}`,
             },
-          })
+          })          
             .then((response) => response.json())
             .then((data) => {
               setDomain(data.shop.myshopify_domain);
