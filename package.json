@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@shopify/app": "3.47.5",
+    "@shopify/app-bridge-utils": "^3.5.1",
     "@shopify/cli": "3.47.5",
     "axios": "^1.4.0",
     "dotenv": "^16.3.1"
