@@ -61,8 +61,9 @@ app.get("/api/products/create", async (_req, res) => {
 
 // New route for fetching domain data
 app.get("/api/shop/domains", async (req, res) => {
-  const client = new shopify.clients.Graphql({session: res.locals.shopify.session});
-  
+  const shop = req.query.shop; // Retrieve the shop parameter from the query string
+  const client = new shopify.clients.Graphql({ session: shopify.getStateForSession({ shop }) });
+
   try {
     const data = await client.query({
       data: `
@@ -77,12 +78,13 @@ app.get("/api/shop/domains", async (req, res) => {
         }
       `,
     });
-  
+
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.toString() });
   }
 });
+
 
 app.get(shopify.config.auth.path, (req, res, next) => {
   console.log('Shop:', req.query.shop); // Log the shop value

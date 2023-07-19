@@ -14,9 +14,12 @@ export function DomainExtractor() {
   useEffect(() => {
     const fetchDomains = async () => {
       try {
-        const res = await fetch('/api/shop/domains');
+        const shop = 'testseoappblankdev.myshopify.com'; // Replace with the actual shop domain
+        const url = `/api/shop/domains?shop=${encodeURIComponent(shop)}`;
+        
+        const res = await fetch(url);
         const data = await res.json();
-
+  
         setDomainData(data);
         setDomainLoading(false);
       } catch (error) {
@@ -24,9 +27,10 @@ export function DomainExtractor() {
         setDomainLoading(false);
       }
     };
-
+  
     fetchDomains();
   }, []);
+  
 
   const toastMarkup = toastProps.content && (
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
