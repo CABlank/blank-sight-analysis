@@ -37,11 +37,13 @@ app.use("/api/*", shopify.validateAuthenticatedSession());
 app.use(express.json());
 
 app.get("/api/products/count", async (_req, res) => {
+  console.log(res.locals.shopify.session); // Log the session object
   const countData = await shopify.api.rest.Product.count({
     session: res.locals.shopify.session,
   });
   res.status(200).send(countData);
 });
+
 
 app.get("/api/products/create", async (_req, res) => {
   let status = 200;
