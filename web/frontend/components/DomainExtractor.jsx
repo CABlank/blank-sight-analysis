@@ -1,29 +1,43 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, TextContainer, Text } from "@shopify/polaris";
 import { Toast } from "@shopify/app-bridge-react";
 import { useTranslation } from "react-i18next";
-import { useAppQuery, useAuthenticatedFetch } from "../hooks";
-import { useQuery } from '@apollo/client';
-import { gql } from 'graphql-tag';
-
-const GET_SHOP_DOMAINS = gql`
-  query {
-    shop {
-      domains {
-        id
-        host
-        url
-      }
-    }
-  }
-`;
 
 export function DomainExtractor() {
   const emptyToastProps = { content: null };
   const [toastProps, setToastProps] = useState(emptyToastProps);
+  const [domainData, setDomainData] = useState(null);
+  const [domainLoading, setDomainLoading] = useState(true);
+  const [domainError, setDomainError] = useState(null);
   const { t } = useTranslation();
 
-  const { loading: domainLoading, error: domainError, data: domainData } = useQuery(GET_SHOP_DOMAINS);
+  useEffect(() => {
+    const fetchDomains = async () => {
+      const client = new shopify.clients.Graphql({session});
+      
+      try {
+        const data = await client.query({
+          data: `query {
+            shop {
+              domains {
+                id
+                host
+                url
+              }
+            }
+          }`,
+        });
+        
+        setDomainData(data);
+        setDomainLoading(false);
+      } catch (error) {
+        setDomainError(error);
+        setDomainLoading(false);
+      }
+    };
+
+    fetchDomains();
+  }, []);
 
   const toastMarkup = toastProps.content && (
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
