@@ -18,7 +18,7 @@ const billingConfig = {
 
 const shopify = shopifyApp({
   api: {
-    hostName: HOST_NAME,
+    hostName: https://blank-sight-analysis-551f1a0e4152.herokuapp.com/,
     apiKey: SHOPIFY_API_KEY,
     apiSecretKey: SHOPIFY_API_SECRET,
     apiVersion: LATEST_API_VERSION,
