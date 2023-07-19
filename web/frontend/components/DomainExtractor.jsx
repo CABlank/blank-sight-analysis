@@ -23,21 +23,7 @@ export function DomainExtractor() {
   const [toastProps, setToastProps] = useState(emptyToastProps);
   const fetch = useAuthenticatedFetch();
   const { t } = useTranslation();
-  const productsCount = 5;
 
-  const {
-    data: productCountData,
-    refetch: refetchProductCount,
-    isLoading: isLoadingCount,
-    isRefetching: isRefetchingCount,
-  } = useAppQuery({
-    url: "/api/products/count",
-    reactQueryOptions: {
-      onSuccess: () => {
-        setIsLoading(false);
-      },
-    },
-  });
 
   const { loading: domainLoading, error: domainError, data: domainData } = useQuery(GET_SHOP_PRIMARY_DOMAIN);
 
@@ -45,40 +31,9 @@ export function DomainExtractor() {
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
   );
 
-  const handlePopulate = async () => {
-    setIsLoading(true);
-    const response = await fetch("/api/products/create");
-
-    if (response.ok) {
-      await refetchProductCount();
-      setToastProps({
-        content: t("ProductsCard.productsCreatedToast", {
-          count: productsCount,
-        }),
-      });
-    } else {
-      setIsLoading(false);
-      setToastProps({
-        content: t("ProductsCard.errorCreatingProductsToast"),
-        error: true,
-      });
-    }
-  };
-
   return (
     <>
       {toastMarkup}
-      <Card
-        title={t("ProductsCard.title")}
-        sectioned
-        primaryFooterAction={{
-          content: t("ProductsCard.populateProductsButton", {
-            count: productsCount,
-          }),
-          onAction: handlePopulate,
-          loading: isLoading,
-        }}
-      >
         <TextContainer spacing="loose">
           <p>{t("ProductsCard.description")}</p>
           <Text as="h4" variant="headingMd">
@@ -97,7 +52,7 @@ export function DomainExtractor() {
             </div>
           )}
         </TextContainer>
-      </Card>
+
     </>
   );
 };
