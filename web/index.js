@@ -63,15 +63,17 @@ app.get("/api/shop/domains", async (req, res) => {
   
   try {
     const data = await client.query({
-      data: `query {
-        shop {
-          domains {
-            id
-            host
-            url
+      data: `
+        query {
+          shop {
+            domains {
+              id
+              host
+              url
+            }
           }
         }
-      }`,
+      `,
     });
   
     res.json(data);
