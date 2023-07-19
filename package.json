@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@shopify/app": "3.47.5",
-    "@shopify/cli": "3.47.5"
+    "@shopify/cli": "3.47.5",
+    "dotenv": "^16.3.1"
   },
   "author": "Carlos",
   "private": true,
