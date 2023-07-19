@@ -1,7 +1,7 @@
 import React from 'react';
 import useSitemap from '../hooks';
 
-const Sitemap = () => {
+const SiteMap = () => {
   const sitemap = useSitemap();
 
   if (!sitemap) {
@@ -15,4 +15,4 @@ const Sitemap = () => {
   );
 };
 
-export default Sitemap;
+export default SiteMap;

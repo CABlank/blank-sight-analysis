@@ -1,11 +1,11 @@
 import React from 'react';
-import Sitemap from '../components';
+import SiteMap from '../components';
 
 const SitemapPage = () => {
   return (
     <div>
       <h1>Sitemap</h1>
-      <Sitemap />
+      <SiteMap />
     </div>
   );
 };
