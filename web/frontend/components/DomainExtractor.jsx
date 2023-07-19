@@ -6,12 +6,13 @@ import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 import { useQuery } from '@apollo/client';
 import { gql } from 'graphql-tag';
 
-const GET_SHOP_PRIMARY_DOMAIN = gql`
+const GET_SHOP_DOMAINS = gql`
   query {
     shop {
-      primaryDomain {
-        url
+      domains {
+        id
         host
+        url
       }
     }
   }
@@ -19,15 +20,12 @@ const GET_SHOP_PRIMARY_DOMAIN = gql`
 
 export function DomainExtractor() {
   const emptyToastProps = { content: null };
-  const [isLoading, setIsLoading] = useState(true);
   const [toastProps, setToastProps] = useState(emptyToastProps);
-  const fetch = useAuthenticatedFetch();
   const { t } = useTranslation();
 
+  const { loading: domainLoading, error: domainError, data: domainData } = useQuery(GET_SHOP_DOMAINS);
 
-  const { loading: domainLoading, error: domainError, data: domainData } = useQuery(GET_SHOP_PRIMARY_DOMAIN);
-
-  const toastMarkup = toastProps.content && !isRefetchingCount && (
+  const toastMarkup = toastProps.content && (
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
   );
 
@@ -36,23 +34,17 @@ export function DomainExtractor() {
       {toastMarkup}
         <TextContainer spacing="loose">
           <p>{t("ProductsCard.description")}</p>
-          <Text as="h4" variant="headingMd">
-            {t("ProductsCard.totalProductsHeading")}
-            <Text variant="bodyMd" as="p" fontWeight="semibold">
-              {isLoadingCount ? "-" : productCountData.count}
-            </Text>
-          </Text>
           {domainLoading && <p>Loading domain...</p>}
           {domainError && <p>Error loading domain: {domainError.message}</p>}
-          {domainData && (
-            <div>
-              <h3>Shop's primary domain:</h3>
-              <p>URL: {domainData.shop.primaryDomain.url}</p>
-              <p>Host: {domainData.shop.primaryDomain.host}</p>
+          {domainData && domainData.shop.domains.map((domain, index) => (
+            <div key={index}>
+              <h3>Shop domain {index + 1}:</h3>
+              <p>ID: {domain.id}</p>
+              <p>URL: {domain.url}</p>
+              <p>Host: {domain.host}</p>
             </div>
-          )}
+          ))}
         </TextContainer>
-
     </>
   );
 };
