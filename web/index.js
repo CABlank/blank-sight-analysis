@@ -3,11 +3,11 @@ import { join } from "path";
 import { readFileSync } from "fs";
 import express from "express";
 import serveStatic from "serve-static";
-import cors from "cors";
 
 import shopify from "./shopify.js";
 import productCreator from "./product-creator.js";
 import GDPRWebhookHandlers from "./gdpr.js";
+
 
 const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "3000",
@@ -33,18 +33,19 @@ app.post(
   shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers })
 );
 
+// If you are adding routes outside of the /api path, remember to
+// also add a proxy rule for them in web/frontend/vite.config.js
+
 app.use("/api/*", shopify.validateAuthenticatedSession());
 
 app.use(express.json());
 
 app.get("/api/products/count", async (_req, res) => {
-  console.log("log the session object",res.locals.shopify.session); // Log the session object
   const countData = await shopify.api.rest.Product.count({
     session: res.locals.shopify.session,
   });
   res.status(200).send(countData);
 });
-
 
 app.get("/api/products/create", async (_req, res) => {
   let status = 200;
@@ -59,44 +60,6 @@ app.get("/api/products/create", async (_req, res) => {
   }
   res.status(status).send({ success: status === 200, error });
 });
-
-// New route for fetching domain data
-
-app.use(cors({
-  origin: 'https://blank-sight-analysis-551f1a0e4152.herokuapp.com' // Replace with your frontend domain
-}));
-app.get('/api/shop/domains', async (req, res) => {
-  const shop = req.query.shop; // Retrieve the shop parameter from the query string
-  const client = new shopify.clients.Graphql({ session: shopify.getStateForSession({ shop }) });
-
-  try {
-    const data = await client.query({
-      data: `
-        query {
-          shop {
-            domains {
-              id
-              host
-              url
-            }
-          }
-        }
-      `,
-    });
-
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error.toString() });
-  }
-});
-
-
-
-app.get(shopify.config.auth.path, (req, res, next) => {
-  console.log('Shop:', req.query.shop); // Log the shop value
-  return shopify.auth.begin()(req, res, next);
-});
-
 
 app.use(shopify.cspHeaders());
 app.use(serveStatic(STATIC_PATH, { index: false }));

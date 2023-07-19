@@ -1,64 +1,40 @@
-import React, { useState, useEffect } from "react";
-import { Card, TextContainer, Text } from "@shopify/polaris";
-import { Toast } from "@shopify/app-bridge-react";
-import { useTranslation } from "react-i18next";
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { getSessionToken } from '@shopify/app-bridge-utils';
+import { useAppBridge } from '@shopify/app-bridge-react';
 
-export function DomainExtractor() {
-  const emptyToastProps = { content: null };
-  const [toastProps, setToastProps] = useState(emptyToastProps);
-  const [domainData, setDomainData] = useState(null);
-  const [domainLoading, setDomainLoading] = useState(true);
-  const [domainError, setDomainError] = useState(null);
-  const { t } = useTranslation();
+const DomainExtractor = () => {
+  const location = useLocation();
+  const app = useAppBridge();
+  const [domain, setDomain] = useState('');
 
   useEffect(() => {
-    const fetchDomains = async () => {
-      try {
-        const shop = 'testseoappblankdev.myshopify.com'; // Replace with the actual shop domain
-        const url = `/api/shop/domains?shop=${encodeURIComponent(shop)}`;
-  
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Request failed with status ${res.status}`);
-        }
-  
-        const data = await res.json();
-  
-        setDomainData(data);
-        setDomainLoading(false);
-      } catch (error) {
-        console.error(error); // Log the error for debugging
-        setDomainError(error);
-        setDomainLoading(false);
-      }
-    };
-  
-    fetchDomains();
-  }, []);
-  
-  
-
-  const toastMarkup = toastProps.content && (
-    <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
-  );
+    const searchParams = new URLSearchParams(location.search);
+    const shop = searchParams.get('shop');
+    if (shop) {
+      getSessionToken(app)
+        .then((token) => {
+          fetch(`https://${shop}/admin/api/2023-04/shop.json`, {
+            headers: {
+              'X-Shopify-Access-Token': token,
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              setDomain(data.shop.myshopify_domain);
+            })
+            .catch((error) => {
+              console.error('Failed to fetch custom domain:', error);
+            });
+        });
+    }
+  }, [app, location.search]);
 
   return (
-    <>
-      {toastMarkup}
-        <TextContainer spacing="loose">
-          <p>{t("ProductsCard.description")}</p>
-          {domainLoading && <p>Loading domain...</p>}
-          {domainError && <p>Error loading domain: {domainError.message}</p>}
-          {domainData && domainData.map((domain, index) => (
-            <div key={index}>
-              <h3>Shop domain {index + 1}:</h3>
-              <p>ID: {domain.id}</p>
-              <p>URL: {domain.url}</p>
-              <p>Host: {domain.host}</p>
-            </div>
-          ))}
-        </TextContainer>
-    </>
+    <div>
+      <h1>Store Domain</h1>
+      <p>{domain}</p>
+    </div>
   );
 };
 
