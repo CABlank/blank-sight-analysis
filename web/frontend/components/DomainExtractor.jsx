@@ -16,13 +16,18 @@ export function DomainExtractor() {
       try {
         const shop = 'testseoappblankdev.myshopify.com'; // Replace with the actual shop domain
         const url = `/api/shop/domains?shop=${encodeURIComponent(shop)}`;
-        
+  
         const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error(`Request failed with status ${res.status}`);
+        }
+  
         const data = await res.json();
   
         setDomainData(data);
         setDomainLoading(false);
       } catch (error) {
+        console.error(error); // Log the error for debugging
         setDomainError(error);
         setDomainLoading(false);
       }
@@ -30,6 +35,7 @@ export function DomainExtractor() {
   
     fetchDomains();
   }, []);
+  
   
 
   const toastMarkup = toastProps.content && (
