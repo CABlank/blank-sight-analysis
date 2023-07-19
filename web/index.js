@@ -8,7 +8,6 @@ import shopify from "./shopify.js";
 import productCreator from "./product-creator.js";
 import GDPRWebhookHandlers from "./gdpr.js";
 
-
 const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "3000",
   10
@@ -33,9 +32,6 @@ app.post(
   shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers })
 );
 
-// If you are adding routes outside of the /api path, remember to
-// also add a proxy rule for them in web/frontend/vite.config.js
-
 app.use("/api/*", shopify.validateAuthenticatedSession());
 
 app.use(express.json());
@@ -59,6 +55,29 @@ app.get("/api/products/create", async (_req, res) => {
     error = e.message;
   }
   res.status(status).send({ success: status === 200, error });
+});
+
+// New route for fetching domain data
+app.get("/api/shop/domains", async (req, res) => {
+  const client = new shopify.clients.Graphql({session: res.locals.shopify.session});
+  
+  try {
+    const data = await client.query({
+      data: `query {
+        shop {
+          domains {
+            id
+            host
+            url
+          }
+        }
+      }`,
+    });
+  
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.toString() });
+  }
 });
 
 app.use(shopify.cspHeaders());

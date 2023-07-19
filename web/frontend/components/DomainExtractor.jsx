@@ -13,21 +13,10 @@ export function DomainExtractor() {
 
   useEffect(() => {
     const fetchDomains = async () => {
-      const client = new shopify.clients.Graphql({session});
-      
       try {
-        const data = await client.query({
-          data: `query {
-            shop {
-              domains {
-                id
-                host
-                url
-              }
-            }
-          }`,
-        });
-        
+        const res = await fetch('/api/shop/domains');
+        const data = await res.json();
+
         setDomainData(data);
         setDomainLoading(false);
       } catch (error) {
