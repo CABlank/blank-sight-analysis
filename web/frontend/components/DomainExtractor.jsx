@@ -39,7 +39,7 @@ export function DomainExtractor() {
           <p>{t("ProductsCard.description")}</p>
           {domainLoading && <p>Loading domain...</p>}
           {domainError && <p>Error loading domain: {domainError.message}</p>}
-          {domainData && domainData.shop.domains.map((domain, index) => (
+          {domainData && domainData.map((domain, index) => (
             <div key={index}>
               <h3>Shop domain {index + 1}:</h3>
               <p>ID: {domain.id}</p>
