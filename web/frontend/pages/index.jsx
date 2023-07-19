@@ -17,7 +17,6 @@ import { ProductsCard } from "../components";
 
 export default function HomePage() {
   const { t } = useTranslation();
-  console.log("process.env = ",process.env);
   return (
     <Page narrowWidth>
       <TitleBar title={t("HomePage.title")} primaryAction={null} />
