@@ -82,6 +82,12 @@ app.get("/api/shop/domains", async (req, res) => {
   }
 });
 
+app.get(shopify.config.auth.path, (req, res, next) => {
+  console.log('Shop:', req.query.shop); // Log the shop value
+  return shopify.auth.begin()(req, res, next);
+});
+
+
 app.use(shopify.cspHeaders());
 app.use(serveStatic(STATIC_PATH, { index: false }));
 
