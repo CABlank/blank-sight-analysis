@@ -62,7 +62,9 @@ app.get("/api/products/create", async (_req, res) => {
 
 // New route for fetching domain data
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://blank-sight-analysis-551f1a0e4152.herokuapp.com' // Replace with your frontend domain
+}));
 app.get('/api/shop/domains', async (req, res) => {
   const shop = req.query.shop; // Retrieve the shop parameter from the query string
   const client = new shopify.clients.Graphql({ session: shopify.getStateForSession({ shop }) });
