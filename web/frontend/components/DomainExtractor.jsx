@@ -17,7 +17,7 @@ const GET_SHOP_PRIMARY_DOMAIN = gql`
   }
 `;
 
-export function ProductsCard() {
+export function DomainExtractor() {
   const emptyToastProps = { content: null };
   const [isLoading, setIsLoading] = useState(true);
   const [toastProps, setToastProps] = useState(emptyToastProps);
