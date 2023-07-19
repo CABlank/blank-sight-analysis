@@ -1,8 +1,7 @@
 import React from 'react';
+import Sitemap from '../components';
 
-import { Sitemap } from "../components";
-
-const Sitemap = () => {
+const SitemapPage = () => {
   return (
     <div>
       <h1>Sitemap</h1>
