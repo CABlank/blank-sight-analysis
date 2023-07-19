@@ -100,4 +100,6 @@ export function DomainExtractor() {
       </Card>
     </>
   );
-}
+};
+
+export default DomainExtractor;
