@@ -3,6 +3,7 @@ import { join } from "path";
 import { readFileSync } from "fs";
 import express from "express";
 import serveStatic from "serve-static";
+import cors from "cors";
 
 import shopify from "./shopify.js";
 import productCreator from "./product-creator.js";
@@ -60,7 +61,9 @@ app.get("/api/products/create", async (_req, res) => {
 });
 
 // New route for fetching domain data
-app.get("/api/shop/domains", async (req, res) => {
+
+app.use(cors());
+app.get('/api/shop/domains', async (req, res) => {
   const shop = req.query.shop; // Retrieve the shop parameter from the query string
   const client = new shopify.clients.Graphql({ session: shopify.getStateForSession({ shop }) });
 
@@ -84,6 +87,7 @@ app.get("/api/shop/domains", async (req, res) => {
     res.status(500).json({ error: error.toString() });
   }
 });
+
 
 
 app.get(shopify.config.auth.path, (req, res, next) => {
