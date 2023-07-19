@@ -1,7 +1,8 @@
+// components/Sitemap.jsx
 import React from 'react';
-import useSitemap from '../hooks';
+import { useSitemap } from '../hooks/useSitemap';
 
-const SiteMap = () => {
+export const SiteMap = () => {
   const sitemap = useSitemap();
 
   if (!sitemap) {
@@ -10,9 +11,16 @@ const SiteMap = () => {
 
   return (
     <div>
-      {/* Logic to display the sitemap data */}
+      <h1>Sitemap</h1>
+      <ul>
+        {sitemap.map((url, index) => (
+          <li key={index}>
+            <a href={url} target="_blank" rel="noreferrer">{url}</a>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-export default SiteMap;
+export default Sitemap;

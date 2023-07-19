@@ -1,5 +1,5 @@
 import React from 'react';
-import SiteMap from '../components';
+import { SiteMap } from '../components';
 
 const SitemapPage = () => {
   return (
