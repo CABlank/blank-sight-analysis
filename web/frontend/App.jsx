@@ -14,6 +14,8 @@ export default function App() {
   // See documentation for <Routes /> for more info
   const pages = import.meta.globEager("./pages/**/!(*.test.[jt]sx)*.([jt]sx)");
   const { t } = useTranslation();
+  console.log("process.env = ",process.env);
+
 
   return (
     <PolarisProvider>
