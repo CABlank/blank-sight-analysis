@@ -16,6 +16,7 @@
     "extends": "@shopify/stylelint-polaris"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.17",
     "@formatjs/intl-locale": "^3.3.2",
     "@formatjs/intl-localematcher": "^0.4.0",
     "@formatjs/intl-pluralrules": "^5.2.4",
@@ -26,6 +27,7 @@
     "@shopify/polaris": "^10.49.1",
     "@vitejs/plugin-react": "1.2.0",
     "axios": "^1.4.0",
+    "graphql": "^16.7.1",
     "i18next": "^23.1.0",
     "i18next-resources-to-backend": "^1.1.4",
     "react": "^17.0.2",

@@ -12,11 +12,13 @@
     "deploy": "shopify app deploy"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.17",
     "@shopify/app": "3.47.5",
     "@shopify/app-bridge-utils": "^3.5.1",
     "@shopify/cli": "3.47.5",
     "axios": "^1.4.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "graphql": "^16.7.1"
   },
   "author": "Carlos",
   "private": true,
