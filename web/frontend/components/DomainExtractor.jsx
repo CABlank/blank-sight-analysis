@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import useAuthenticatedFetch from '../hooks/useAuthenticatedFetch';
+import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
 const DomainExtractor = () => {
   const location = useLocation();
