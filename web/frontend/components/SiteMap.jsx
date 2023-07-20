@@ -1,6 +1,5 @@
-// components/Sitemap.jsx
 import React from 'react';
-import { useSitemap } from '../hooks/useSitemap';
+import { useSitemap } from '../hooks';
 
 export const SiteMap = () => {
   const sitemap = useSitemap();

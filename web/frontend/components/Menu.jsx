@@ -1,5 +1,3 @@
-// web/frontend/components/Menu.jsx
-
 import { NavigationMenu } from "@shopify/app-bridge-react";
 import { useTranslation } from "react-i18next";
 

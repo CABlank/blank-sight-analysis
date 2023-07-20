@@ -19,4 +19,4 @@ const useSitemap = () => {
   return useSitemap;
 };
 
-export { useSitemap };
+export { useSitemap }; 
